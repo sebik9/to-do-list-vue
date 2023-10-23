@@ -7,8 +7,13 @@
 
   <div class="error-message">{{ showError }}</div>
   <ul>
-    <li v-for="(item, i) in items" :key="i" @click="toggleStatus(i)" :class="{ checked: item.checked }">
-      {{ item.text }} 
+    <li
+      v-for="(item, i) in items"
+      :key="i"
+      @click="toggleStatus(i)"
+      :class="{ checked: item.checked }"
+    >
+      {{ item.text }}
       <span @click="removeTask(i)" class="close"> &#215;</span>
     </li>
   </ul>
@@ -19,30 +24,30 @@ export default {
   data() {
     return {
       items: [],
-      inputValue: "",
-      showError: ""
+      inputValue: '',
+      showError: ''
     }
-  }, methods: {
+  },
+  methods: {
     addItem() {
-      if (this.inputValue.trim() === "") {
-        this.showError = "Must provide task"
+      if (this.inputValue.trim() === '') {
+        this.showError = 'Must provide task'
         setTimeout(() => {
-          this.showError = "";
-        },3000)
-        return;
+          this.showError = ''
+        }, 3000)
+        return
       }
-      this.items.push({ text: this.inputValue, checked:false});
-      this.inputValue = "";
+      this.items.push({ text: this.inputValue, checked: false })
+      this.inputValue = ''
     },
     removeTask(i) {
       this.items.splice(i, 1)
     },
     toggleStatus(i) {
-      this.items[i].checked = !this.items[i].checked;
-    },
+      this.items[i].checked = !this.items[i].checked
+    }
   }
 }
-
 </script>
 
 <style scoped>

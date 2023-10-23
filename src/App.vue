@@ -1,85 +1,165 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="header">
+    <h2>To Do List</h2>
+    <input id="myInput" v-model="inputValue" placeholder="Task..." />
+    <span class="addBtn" id="addButton" @click="addItem()">Add</span>
+  </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="error-message">{{ showError }}</div>
+  <ul>
+    <li v-for="(item, i) in items" :key="i" @click="toggleStatus(i)" :class="{ checked: item.checked }">
+      {{ item.text }} 
+      <span @click="removeTask(i)" class="close"> &#215;</span>
+    </li>
+  </ul>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      items: [],
+      inputValue: "",
+      showError: ""
+    }
+  }, methods: {
+    addItem() {
+      if (this.inputValue.trim() === "") {
+        this.showError = "Must provide task"
+        setTimeout(() => {
+          this.showError = "";
+        },3000)
+        return;
+      }
+      this.items.push({ text: this.inputValue, checked:false});
+      this.inputValue = "";
+    },
+    removeTask(i) {
+      this.items.splice(i, 1)
+    },
+    toggleStatus(i) {
+      this.items[i].checked = !this.items[i].checked;
+    },
+  }
+}
+
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+* {
+  box-sizing: border-box;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+ul {
+  margin: 0;
+  padding: 0;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
+.header {
+  background-color: #a7c7e7;
+  padding: 30px 40px;
   text-align: center;
-  margin-top: 2rem;
+  width: 38%;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.header:after {
+  content: '';
+  display: table;
+  clear: both;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+h2 {
+  text-align: center;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+#myInput {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
 }
 
-nav a:first-of-type {
-  border: 0;
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.addBtn:hover {
+  background-color: green;
+  color: white;
+  transition: 0.3s;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.addBtn:active {
+  background: #d9d9d9;
+  color: #555;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+ul li:hover {
+  background: #ddd;
+}
 
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+ul li {
+  cursor: pointer;
+  position: relative;
+  width: 38%;
+  padding: 12px 8px 12px 40px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+  transition: 0.3s;
+}
+
+.close:hover {
+  background-color: red;
+  color: white;
+  transition: 0.3s;
 }
 </style>

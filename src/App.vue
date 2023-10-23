@@ -25,14 +25,17 @@ export default {
     return {
       items: [],
       inputValue: '',
-      showError: ''
+      showError: '',
+      timer: null
     }
   },
   methods: {
     addItem() {
       if (this.inputValue.trim() === '') {
         this.showError = 'Must provide task'
-        setTimeout(() => {
+        clearTimeout(this.timer)
+
+        this.timer = setTimeout(() => {
           this.showError = ''
         }, 3000)
         return

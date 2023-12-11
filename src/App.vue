@@ -93,6 +93,7 @@ h2 {
 .addBtn {
   padding: 10px;
   width: 25%;
+  min-width: 40px;
   background: #d9d9d9;
   color: #555;
   float: left;

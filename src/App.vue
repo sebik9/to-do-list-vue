@@ -2,7 +2,7 @@
   <div class="header">
     <h2>To Do List</h2>
     <input id="myInput" v-model="inputValue" placeholder="Task..." />
-    <span class="addBtn" id="addButton" @click="addItem()">Add</span>
+    <span class="addBtn" id="addButton" @click="addItem">Add</span>
   </div>
 
   <div class="error-message">{{ showError }}</div>
@@ -44,10 +44,18 @@ export default {
       this.inputValue = ''
     },
     removeTask(i) {
-      this.items.splice(i, 1)
+      clearTimeout(this.timer);
+      this.items.splice(i, 1);
+      this.$nextTick(() => {
+        if (i >= 0 && i < this.items.length) {
+          this.items[i].checked = !this.items[i].checked;
+        }
+      })
     },
     toggleStatus(i) {
+      if (i >= 0 && i < this.items.length) {
       this.items[i].checked = !this.items[i].checked
+      }
     }
   }
 }
